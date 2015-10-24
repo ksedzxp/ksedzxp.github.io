@@ -22,7 +22,7 @@
     }
     #number_submit {
       width: 100%;
-      margin: 10px 0 20px 0;
+      margin: 10px 0 40px 0;
     }
     table th {
       font-size: 18px;
@@ -31,6 +31,12 @@
     table td {
       font-size: 14px;
       text-align: center;
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        /* display: none; <- Crashes Chrome on hover */
+        -webkit-appearance: none;
+        margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
     }
     </style>
   </head>
@@ -43,7 +49,7 @@
         <table id="history" class="table table-hover table-bordered table-striped hidden">
           <tr><th>数字</th><th>结果</th></tr>
         </table>
-				<input type="text" id="number_input" class="form-control" placeholder="请输入4个不同的0-9的数字" />
+				<input type="number" id="number_input" class="form-control" placeholder="请输入4个不同的0-9的数字" />
 				<input type="submit" id="number_submit" class="btn btn-warning" value="先猜一次" data-first="0" />
       </div>
     </div>
@@ -133,6 +139,8 @@
           $("#number_submit").attr("data-first", 1);
         }
         $("#history").append("<tr><td>" + v + "</td><td>" + result_string(r[0], r[1]) + "</td></tr>");
+        $("#number_input").val("");
+        $("#number_input").focus();
         return true;
       });
     </script>
