@@ -182,6 +182,7 @@
         }
         $("#history").append("<tr><td>" + v + "</td><td>" + result_string(r[0], r[1]) + "</td></tr>");
         if(r[0] == 4){
+          $("title").text("【猜数字】我用了 " + cnt + " 次就猜中了数字！");
           $("#success").modal({
             backdrop: "static",  // 点击外部不会关闭
             keyboard: false  // 禁用退出键
