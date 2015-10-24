@@ -38,9 +38,21 @@
         -webkit-appearance: none;
         margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
     }
+    .share {
+      position: fixed;
+      background: rgba(0,0,0,.75);
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      display: none;
+    }
     </style>
   </head>
   <body>
+    <div class="share" id="share" onclick="document.getElementById('share').style.display='none'" style="display: none;">
+      <img width="85%" src="images/share.png">
+    </div>
     <div class="page">
       <div class="container">
         <div class="word-wrap">从 <font color="#EE7600">0000</font> 到 <font color="#EE7600">9999</font> 的一个数</div>
@@ -53,15 +65,31 @@
 				<input type="submit" id="number_submit" class="btn btn-warning" value="先猜一次" data-first="0" />
 
         <!-- 用于提示数字不合法的模态窗口  -->
-        <div class="modal fade" id="input_error_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal fade" id="input_error_dialog" tabindex="-1" role="dialog" aria-labelledby="errorInputLabel">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">输入有误</h4>
+                <h4 class="modal-title" id="errorInputLabel">输入有误</h4>
               </div>
               <div class="modal-body">
                 请输入 4 个不同的 0-9 的数字，如 0352
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 分享、再来一次 -->
+        <div class="modal fade" id="success" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-body">
+                <p>恭喜你，猜对啦！</p>
+                <p>赶紧分享给小伙伴秀一下吧！</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="play_again">再玩一遍！</button>
+                <button type="button" class="btn btn-warning" id="share_button">分 享</button>
               </div>
             </div>
           </div>
@@ -74,6 +102,7 @@
     <script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script>
+      var cnt = 0;
       var n = (function(){
         var f = function(){return parseInt(Math.random() * 10)};
         var ns = [f()];
@@ -144,17 +173,21 @@
           $('#input_error_dialog').modal();
           return false;
         }
+        cnt += 1;
         var r = AandB(v);
-        if(r[0] == 4){
-          alert("恭喜你，答对了！");
-          return true;
-        }
         if($("#number_submit").attr("data-first") == 0){
           $("#history").toggleClass("hidden");
           $("#number_submit").val("再猜一次");
           $("#number_submit").attr("data-first", 1);
         }
         $("#history").append("<tr><td>" + v + "</td><td>" + result_string(r[0], r[1]) + "</td></tr>");
+        if(r[0] == 4){
+          $("#success").modal({
+            backdrop: "static",  // 点击外部不会关闭
+            keyboard: false  // 禁用退出键
+          });
+          return true;
+        }
         $("#number_input").val("");
         $("#number_input").focus();
         return true;
@@ -164,6 +197,15 @@
         $("#number_input").focus();
         $("#number_input").select();
       });
-    </script>
+
+      $("#play_again").on("click", function(){
+        location.reload();
+      });
+
+      $("#share_button").on("click", function(){
+        $("#success").modal('hide');
+        document.getElementById('share').style.display='inline';
+      })
+      </script>
   </body>
 </html>
