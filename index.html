@@ -51,6 +51,22 @@
         </table>
 				<input type="number" id="number_input" class="form-control" placeholder="请输入4个不同的0-9的数字" />
 				<input type="submit" id="number_submit" class="btn btn-warning" value="先猜一次" data-first="0" />
+
+        <!-- 用于提示数字不合法的模态窗口  -->
+        <div class="modal fade" id="input_error_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">输入有误</h4>
+              </div>
+              <div class="modal-body">
+                请输入 4 个不同的 0-9 的数字，如 0352
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -103,29 +119,29 @@
       }
 
       function result_string(A, B) {
-        var s = "";
+        var part1 = "";
+        var part2 = "";
+        var part3 = "";
+        var r = [];
         for (var i=0; i<A; i++) {
-          s += '<img src="images/r1.png" width="26px">';
-        }
-        if(s.length) {
-          s += " ";
+          part1 += '<img src="images/r1.png" width="26px">';
         }
         for (var i=0; i<B; i++) {
-          s += '<img src="images/r2.png" width="26px">';
-        }
-        if(s.length) {
-          s += " ";
+          part2 += '<img src="images/r2.png" width="26px">';
         }
         for (var i=0; i<4-A-B; i++) {
-          s += '<img src="images/r3.png" width="26px">';
+          part3 += '<img src="images/r3.png" width="26px">';
         }
-        return s;
+        return [part1, part2, part3].filter(function(e){
+          return e;
+        }).join('<img src="images/splitline.png">');
       }
 
       $("#number_submit").on("click", function(){
         var v = $("#number_input").val();
         if(!is_good_number(v)) {
-          alert("请输入 4 个不同的 0-9 的数字，如 0352");
+          //alert("请输入 4 个不同的 0-9 的数字，如 0352");
+          $('#input_error_dialog').modal();
           return false;
         }
         var r = AandB(v);
@@ -142,6 +158,11 @@
         $("#number_input").val("");
         $("#number_input").focus();
         return true;
+      });
+
+      $("#input_error_dialog").on("hidden.bs.modal", function(){
+        $("#number_input").focus();
+        $("#number_input").select();
       });
     </script>
   </body>
