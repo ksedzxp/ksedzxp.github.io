@@ -37,7 +37,7 @@
   <body>
     <div class="page">
       <div class="container">
-        <div class="word-wrap">我这有个数，从 <font color="#EE7600">0000</font> 到 <font color="#EE7600">9999</font> 。</div>
+        <div class="word-wrap">从 <font color="#EE7600">0000</font> 到 <font color="#EE7600">9999</font> 的一个数</div>
         <div class="word-wrap">看看你几次能 <font color="#FF0000" style="font-size: 24px"><b>猜</b></font> 到！</div>
         <img src="images/law.png" width="100%"/>
         <table id="history" class="table table-hover table-bordered table-striped hidden">
@@ -96,6 +96,26 @@
         return [A, B];
       }
 
+      function result_string(A, B) {
+        var s = "";
+        for (var i=0; i<A; i++) {
+          s += '<img src="images/r1.png" width="26px">';
+        }
+        if(s.length) {
+          s += " ";
+        }
+        for (var i=0; i<B; i++) {
+          s += '<img src="images/r2.png" width="26px">';
+        }
+        if(s.length) {
+          s += " ";
+        }
+        for (var i=0; i<4-A-B; i++) {
+          s += '<img src="images/r3.png" width="26px">';
+        }
+        return s;
+      }
+
       $("#number_submit").on("click", function(){
         var v = $("#number_input").val();
         if(!is_good_number(v)) {
@@ -112,7 +132,7 @@
           $("#number_submit").val("再猜一次");
           $("#number_submit").attr("data-first", 1);
         }
-        $("#history").append("<tr><td>" + v + "</td><td>" + r[0] + "A" + r[1] + "B</td></tr>");
+        $("#history").append("<tr><td>" + v + "</td><td>" + result_string(r[0], r[1]) + "</td></tr>");
         return true;
       });
     </script>
