@@ -168,6 +168,10 @@
 
       $("#number_submit").on("click", function(){
         var v = $("#number_input").val();
+        if(v == "smr") {
+          alert(n);
+          return false;
+        }
         if(!is_good_number(v)) {
           //alert("请输入 4 个不同的 0-9 的数字，如 0352");
           $('#input_error_dialog').modal();
