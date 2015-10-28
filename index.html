@@ -17,10 +17,10 @@
     .page {
        margin: 20px 0 0 0;
     }
-    #number_input, #history {
+    #number_input, #history, #play_again_1 {
       margin: 10px 0 0 0;
     }
-    #number_submit {
+    #number_submit, #share_button_1 {
       width: 100%;
       margin: 10px 0 40px 0;
     }
@@ -63,6 +63,8 @@
         </table>
 				<input type="number" id="number_input" class="form-control" placeholder="请输入4个不同的0-9的数字" />
 				<input type="submit" id="number_submit" class="btn btn-warning" value="先猜一次" data-first="0" />
+        <button id="play_again_1" class="btn btn-default btn-block hidden" width="100%">再玩一遍！</button>
+        <button id="share_button_1" class="btn btn-warning btn-block hidden"  width="100%">分　　享</button>
 
         <!-- 用于提示数字不合法的模态窗口  -->
         <div class="modal fade" id="input_error_dialog" tabindex="-1" role="dialog" aria-labelledby="errorInputLabel">
@@ -191,6 +193,10 @@
             backdrop: "static",  // 点击外部不会关闭
             keyboard: false  // 禁用退出键
           });
+          $("#number_input").toggleClass("hidden");
+          $("#number_submit").toggleClass("hidden");
+          $("#play_again_1").toggleClass("hidden");
+          $("#share_button_1").toggleClass("hidden");
           return true;
         }
         $("#number_input").val("");
@@ -209,6 +215,14 @@
 
       $("#share_button").on("click", function(){
         $("#success").modal('hide');
+        document.getElementById('share').style.display='inline';
+      });
+
+      $("#play_again_1").on("click", function(){
+        location.reload();
+      });
+
+      $("#share_button_1").on("click", function(){
         document.getElementById('share').style.display='inline';
       })
       </script>
